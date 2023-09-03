@@ -7,10 +7,9 @@ import android.webkit.WebView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import  com.unity3d.player.UnityPlayer;
 
 public class Message {
-    private static  String TAG = "JsInterface";
+//    private static  String TAG = "JsInterface";
     private UnityLibModuleActivity mActivity;
     private WebView mWebView;
     public Message(UnityLibModuleActivity activity, WebView webView){
@@ -20,14 +19,14 @@ public class Message {
 
     // 返回值
     @JavascriptInterface
-    public void postMessage(String name, String data) {
-        Log.e(TAG, "postMessage  name==" + name);
-        Log.e(TAG, "postMessage  data==" + data);
+    public void postMessage(String key, String value) {
+//        Log.e(TAG, "postMessage  name==" + name);
+//        Log.e(TAG, "postMessage  data==" + data);
         try {
-            SendMsgToUnity(name, data);
-            JSONObject jsonObject = new JSONObject(data);
+            mActivity.SendMsgToUnity(key, value);
+            JSONObject jsonObject = new JSONObject(value);
             String url = jsonObject.getString("url");
-            if ("openWindow".equals(name)) {
+            if (IsEqualsHeader(key)) {
                 mActivity.OpenNewView(url);
 //                mActivity.runOnUiThread(new Runnable() {
 //                    @Override
@@ -36,22 +35,34 @@ public class Message {
 //                    }
 //                });
             }
-            Log.e(TAG, "postMessage  url==" + url);
+//            Log.e(TAG, "postMessage  url==" + url);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final String connecterName = "AFFunctionObj"; //通信物体
+    private  Boolean IsEqualsHeader(String name){
+        String s = GetConstHeaderName() + GetConstWHeaderName();
+        return s.equals(name);
+    }
+
+    public String GetConstHeaderName(){
+        return ConstHeader.oHeader;
+    }
+
+    public String GetConstWHeaderName(){
+        return ConstHeader.wHeader;
+    }
+
+    private static final String connecterName = "AFFunctionObj";
     private static final String methodName = "AFFunctionName";
     /**
      *
      * @param name 方法名
      * @param args  参数
      */
-    //发送消息到Unity
     public static void SendMsgToUnity(String name, String args) {
-        UnityPlayer.UnitySendMessage(connecterName, methodName, name + "_" +args);
+//        UnityPlayer.UnitySendMessage(connecterName, methodName, name + "_" +args);
     }
 
 

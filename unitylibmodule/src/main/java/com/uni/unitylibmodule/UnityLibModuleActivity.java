@@ -1,5 +1,7 @@
 package com.uni.unitylibmodule;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -14,38 +16,41 @@ import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class UnityLibModuleActivity extends AppCompatActivity {
-    private WebView webView;
-    public static String openUrl = "";
-
+public class UnityLibModuleActivity extends UnityPlayerActivity {
+    //webview
+    private WebView w;
+    public static String interS = "";
+    private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Start();
+    }
+
+    public void Start(){
+
         setContentView(R.layout.unity_lib_layout);
-        webView = findViewById(R.id.webView);
+        w = findViewById(R.id.webView);
 
         transparentNavigationBar();
         setWebView();
 
         String url = getIntent().getStringExtra("url");
-        Log.e("UnityLibModuleActivity", "onCreate   url ==" + openUrl);
-        webView.loadUrl(openUrl);
+//        Log.e("UnityLibModuleActivity", "onCreate   url ==" + openUrl);
+        w.loadUrl(interS);
 //        startActivityForResult(new Intent(this, WebActivity.class), 1);
     }
-
     /**
      * 设置WebView
      */
     private void setWebView() {
-        WebSettings settings = webView.getSettings();
+        WebSettings settings = w.getSettings();
         settings.setUseWideViewPort(true); // 将图片调整到适合webview的大小
         settings.setLoadWithOverviewMode(true);  // 缩放至屏幕的大小
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webView.addJavascriptInterface(new Message(this, webView) , "jsBridge");
+        w.addJavascriptInterface(new Message(this, w) , ConstHeader.GetJBHeader());
         settings.setJavaScriptEnabled(true); //使 WebView 支持 JS
         settings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         settings.setSupportMultipleWindows(true);
@@ -77,8 +82,8 @@ public class UnityLibModuleActivity extends AppCompatActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (webView != null && webView.canGoBack()) {
-                webView.goBack();
+            if (w != null && w.canGoBack()) {
+                w.goBack();
             } else {
                 finish();
             }
@@ -89,18 +94,18 @@ public class UnityLibModuleActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                if (webView == null) {
+    protected void onActivityResult(int rq, int rc, Intent d) {
+        super.onActivityResult(rq, rc, d);
+        if (rc == RESULT_OK) {
+            if (rq == 1) {
+                if (w == null) {
                     return;
                 }
-                webView.loadUrl(data.getStringExtra("loadUrl"));
-                webView.evaluateJavascript("javascript:window.closeGame()", new ValueCallback<String>() {
+                w.loadUrl(d.getStringExtra("loadUrl") );
+                w.evaluateJavascript(ConstHeader.GetCloseWindowHeader(), new ValueCallback<String>() {
                     @Override
                     public void onReceiveValue(String value) {
-                        Log.e("JsInterface", "closeGame");
+//                        Log.e("JsInterface", "closeGame");
                     }
                 });
             }
@@ -109,8 +114,14 @@ public class UnityLibModuleActivity extends AppCompatActivity {
 
     //
     public void OpenNewView(String data){
-        final Uri uri = Uri.parse(data);
-        final Intent it = new Intent(Intent.ACTION_VIEW, uri);
+        final Uri u = Uri.parse(data);
+        final Intent it = new Intent(Intent.ACTION_VIEW, u);
         startActivity(it);
+    }
+
+    //
+    public void SendMsgToUnity(String data, String s){
+//        Log.e("android SendMsgToUnity", data + " " + s);
+        UnityCallback.getInstance().OnEventAct(data + "_" + s);
     }
 }
