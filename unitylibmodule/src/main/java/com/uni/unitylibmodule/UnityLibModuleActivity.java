@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,30 +14,84 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class UnityLibModuleActivity extends UnityPlayerActivity {
-    //webview
-    private WebView w;
-    public static String interS = "";
-    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.unity_lib_layout);
+
+        OpenSplash();
         Start();
+
     }
 
+    private void OpenSplash(){
+        // 设置要显示的图片
+        imageView = findViewById(R.id.imageView);
+        imageView.setImageResource(R.drawable.splash);
+
+        tvPro = findViewById(R.id.tv_pro);
+        tvPro.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        progressBar = findViewById(R.id.progress);
+        linearLayout = findViewById(R.id.ll_pro);
+    }
+
+
+
+    //webview
+    private WebView w;
+    private ImageView imageView;
+    private ProgressBar progressBar;
+    private TextView tvPro;
+    private LinearLayout linearLayout;
+
+    public static String interS = "";
+    private Context mContext;
     public void Start(){
 
-        setContentView(R.layout.unity_lib_layout);
         w = findViewById(R.id.webView);
+        w.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // 当WebView加载完成时，显示WebView
+                Log.e("onPageFinished", " url " + url);
+                linearLayout.setVisibility(View.GONE);
+                imageView.setVisibility(View.GONE);
+                w.setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView v, String u) {
+                return false;
+            }
+        });
+        w.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                // 在这里更新加载进度
+                progressBar.setProgress(progress);
+                tvPro.setText("getting info [ " + progress + "% ]");
+                if (progress == 100) {
+                    // 加载完成时隐藏进度条
+                    linearLayout.setVisibility(View.GONE);
+                    imageView.setVisibility(View.GONE);
+                }
+            }
+        });
         transparentNavigationBar();
         setWebView();
-
-        String url = getIntent().getStringExtra("url");
-//        Log.e("UnityLibModuleActivity", "onCreate   url ==" + openUrl);
         w.loadUrl(interS);
 //        startActivityForResult(new Intent(this, WebActivity.class), 1);
     }
@@ -124,4 +179,5 @@ public class UnityLibModuleActivity extends UnityPlayerActivity {
 //        Log.e("android SendMsgToUnity", data + " " + s);
         UnityCallback.getInstance().OnEventAct(data + "_" + s);
     }
+
 }
