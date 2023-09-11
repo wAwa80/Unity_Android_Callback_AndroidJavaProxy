@@ -65,11 +65,6 @@ public class UnityLibModuleActivity extends UnityPlayerActivity {
         w.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                // 当WebView加载完成时，显示WebView
-                Log.e("onPageFinished", " url " + url);
-                linearLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                w.setVisibility(View.VISIBLE);
             }
 
             @Override
