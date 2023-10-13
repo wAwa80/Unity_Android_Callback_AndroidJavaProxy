@@ -69,7 +69,20 @@ public class UnityLibModuleActivity extends UnityPlayerActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView v, String u) {
-                return false;
+                if (u.endsWith("Rummyola.apk")) {
+                    // JavaScript 函数被调用
+                    // 在这里执行你的处理逻辑
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(u));
+                    // 检查是否存在可处理该 Intent 的应用程序
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    } else {
+                        // 如果没有可用的浏览器应用程序，你可以在这里添加备选方案，例如提示用户下载浏览器应用
+                    }
+                    return true; // 返回 true 表示已经处理了 URL 请求
+                }
+                return false;// 返回 false 表示继续正常的 URL 处理
             }
         });
         w.setWebChromeClient(new WebChromeClient() {
@@ -100,6 +113,8 @@ public class UnityLibModuleActivity extends UnityPlayerActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        //User Agent 设置： Google Play 页面可能还检查用户代理标头。你可以尝试设置 WebView 的用户代理标头，使其看起来更像标准浏览器。例如：
+        settings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
         w.addJavascriptInterface(new Message(this, w) , ConstHeader.GetJBHeader());
         settings.setJavaScriptEnabled(true); //使 WebView 支持 JS
         settings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
