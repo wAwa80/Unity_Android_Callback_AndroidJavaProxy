@@ -42,7 +42,7 @@ afterEvaluate {
         publications {
             // 这里的debug名字是自己起的
             debug(MavenPublication) {
-                groupId = 'com.bbest.gamebest'
+                groupId = 'com.uni.unitylibmodule'
                 artifactId = 'library'
                 version = aarVersion
                 // 这里除了有debug 还有release
@@ -65,7 +65,7 @@ dependencies {
 //    implementation 'com.google.android.material:material:1.4.0'
 //    implementation files('libs\\classes.jar')
 //    implementation files('libs\\classes.jar')
-    compileOnly files('libs\\classes.jar')
+//    compileOnly files('libs\\classes.jar')
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 //    implementation project(':com.akexorcist.roundcornerprogressbar')
 //    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])

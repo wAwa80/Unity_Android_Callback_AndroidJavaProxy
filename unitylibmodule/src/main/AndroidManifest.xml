@@ -2,23 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.uni.unitylibmodule">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 <!--    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>-->
 
-    <application>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
-        </activity>
+<!--    <application>-->
+<!--        <service android:name="com.uni.unitylibmodule_buttonoverlay.ButtonOverlayService" />-->
+<!--        &lt;!&ndash;        <activity&ndash;&gt;-->
+<!--&lt;!&ndash;            android:name="com.uni.unitylibmodule_buttonoverlay.UnityLibModuleActivity"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:screenOrientation="portrait"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:exported="true">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <intent-filter>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <action android:name="android.intent.action.MAIN"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </intent-filter>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <meta-data android:name="unityplayer.UnityActivity" android:value="true"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </activity>&ndash;&gt;-->
+
+<!--    </application>-->
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true">
+
         <activity
-            android:name=".UnityLibModuleActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN"/>-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--            <meta-data android:name="unityplayer.UnityActivity" android:value="true"/>-->
-        </activity>
+            android:name=".WebActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ButtonActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
 
     </application>
 

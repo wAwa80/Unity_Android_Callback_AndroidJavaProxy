@@ -1,7 +1,6 @@
 package com.uni.unitylibmodule;
 
 import android.content.Context;
-import android.util.Log;
 
 public class UnityCallback implements ToUnityCallback {
 

@@ -4,20 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UnityLibModuleActivity"
+    tools:context=".WebActivity"
     android:fitsSystemWindows="false">
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/myButton"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ui_an_lobby1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:text=""
+        />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#000000"
-        android:scaleType="centerInside" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/ll_pro"
@@ -45,5 +54,4 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
 </RelativeLayout>
