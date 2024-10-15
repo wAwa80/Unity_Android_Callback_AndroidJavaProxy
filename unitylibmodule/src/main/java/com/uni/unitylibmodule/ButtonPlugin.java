@@ -7,7 +7,8 @@ import android.util.Log;
 public class ButtonPlugin {
 
     private static Activity unityActivity;
-
+    private static String url = null;
+    private static String backLobbyUrl = null;
     public static void initialize(Activity activity) {
         Log.e("ButtonPlugin", "initialize");
         unityActivity = activity;
@@ -26,11 +27,28 @@ public class ButtonPlugin {
         unityActivity.stopService(intent);
     }
 
+    public static void SetUrl(String _url, String _backLobbyUrl) {
+        url = _url;
+        backLobbyUrl = _backLobbyUrl;
+    }
+
+    public static String GetUrl() {
+        return url;
+    }
+
+    public static String GetBackLobbyUrl() {
+        return backLobbyUrl;
+    }
+
     public static void showButtonActivity() {
 //        Intent intentBtn = new Intent(unityActivity, ButtonActivity.class);
         Intent intentWeb = new Intent(unityActivity, WebActivity.class);
         unityActivity.startActivity(intentWeb);
 //        unityActivity.startActivity(intentBtn);
+    }
+
+    public static void closeButtonActivity() {
+        WebActivity.closeActivity();
     }
 }
 

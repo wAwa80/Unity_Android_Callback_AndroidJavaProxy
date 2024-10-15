@@ -10,12 +10,12 @@ import org.json.JSONObject;
 
 public class Message {
 //    private static  String TAG = "JsInterface";
-    private UnityLibModuleActivity mActivity;
-    private WebView mWebView;
-    public Message(UnityLibModuleActivity activity, WebView webView){
-        mActivity = activity;
-        mWebView = webView;
-    }
+//    private UnityLibModuleActivity mActivity;
+//    private WebView mWebView;
+//    public Message(UnityLibModuleActivity activity, WebView webView){
+//        mActivity = activity;
+//        mWebView = webView;
+//    }
 
     // 返回值
     @JavascriptInterface
@@ -23,11 +23,11 @@ public class Message {
 //        Log.e(TAG, "postMessage  name==" + name);
 //        Log.e(TAG, "postMessage  data==" + data);
         try {
-            mActivity.SendMsgToUnity(key, value);
+//            mActivity.SendMsgToUnity(key, value);
             JSONObject jsonObject = new JSONObject(value);
             String url = jsonObject.getString("url");
             if (IsEqualsHeader(key)) {
-                mActivity.OpenNewView(url);
+//                mActivity.OpenNewView(url);
 //                mActivity.runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {

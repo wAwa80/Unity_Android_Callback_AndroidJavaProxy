@@ -28,7 +28,8 @@
         <activity
             android:name=".WebActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".ButtonActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
 
     </application>
