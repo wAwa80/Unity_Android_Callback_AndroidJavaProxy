@@ -15,11 +15,11 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,10 +27,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.HashMap;
+
 //import androidx.appcompat.app.AppCompatActivity;
 
 public class WebActivity extends Activity {
-    private WebView webView;
+    private com.tencent.smtt.sdk.WebView webView;
     private ImageView imageView;
 
     private ProgressBar progressBar;
@@ -40,11 +45,17 @@ public class WebActivity extends Activity {
     private static WebActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 在调用TBS初始化、创建WebView之前进行如下配置
+        HashMap map = new HashMap();
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+        QbSdk.initTbsSettings(map);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
-
         super.onCreate(savedInstanceState);
+
         // Hide the title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // Hide the notification bar
@@ -139,7 +150,7 @@ public class WebActivity extends Activity {
         settings.setUseWideViewPort(true); // 将图片调整到适合webview的大小
 //        settings.setLoadWithOverviewMode(true);  // 缩放至屏幕的大小
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            settings.setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        webView.addJavascriptInterface(new JsInterface(this, webView) , "jsBridge");
         settings.setJavaScriptEnabled(true); //使 WebView 支持 JS
@@ -149,7 +160,7 @@ public class WebActivity extends Activity {
         settings.setDomStorageEnabled(true);
         settings.setLoadsImagesAutomatically(true); // 自动加载图像
         settings.setBlockNetworkImage(false); // 不阻止网络图像加载
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW); // 允许混合内容
+        settings.setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW); // 允许混合内容
         settings.setCacheMode(WebSettings.LOAD_DEFAULT); // 使用默认缓存策略
         settings.setAppCacheEnabled(true); // 启用应用内缓存
         settings.setUseWideViewPort(true); // 允许使用广泛的视口
@@ -158,7 +169,7 @@ public class WebActivity extends Activity {
         settings.setBuiltInZoomControls(true); // 允许缩放
         settings.setSupportZoom(true);
 
-        webView.loadUrl("http://192.168.6.228:8038/?isEncrypt=true&member_account=sss121&member_password=qqq111&game_id=10102&game_guest=false&server_url=http%3A%2F%2F192.168.6.128:9001");
+        webView.loadUrl("http://192.168.6.229:8079/?isEncrypt=true&member_account=sss001&member_password=qqq111&game_id=10102&game_guest=false&server_url=http%3A%2F%2F192.168.6.128:9001");
         String url = ButtonPlugin.GetUrl();
         if (url != null){
             Log.e("WebActivity", "url not null");

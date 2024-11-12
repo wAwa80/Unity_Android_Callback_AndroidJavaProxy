@@ -1,0 +1,6 @@
+请将D:\Projects\Demo\unityApplication\unitylibmodule\build\intermediates\packaged_res\debug\layout\activity_web_view.xml中10行 标签写法 <Webview 替换成 <com.tencent.smtt.sdk.WebView 
+请将D:\Projects\Demo\unityApplication\unitylibmodule\src\main\java\com\uni\unitylibmodule\WebActivity.java中 第18行 android.webkit.ValueCallback 替换成 com.tencent.smtt.sdk.ValueCallback 
+请将D:\Projects\Demo\unityApplication\unitylibmodule\src\main\java\com\uni\unitylibmodule\WebActivity.java中 第19行 android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient 
+请将D:\Projects\Demo\unityApplication\unitylibmodule\src\main\java\com\uni\unitylibmodule\WebActivity.java中 第20行 android.webkit.WebSettings 替换成 com.tencent.smtt.sdk.WebSettings 
+请将D:\Projects\Demo\unityApplication\unitylibmodule\src\main\res\layout\activity_web_view.xml中10行 标签写法 <Webview 替换成 <com.tencent.smtt.sdk.WebView 
+扫描完成！

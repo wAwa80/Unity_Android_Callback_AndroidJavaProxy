@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import com.tencent.smtt.sdk.QbSdk;
+import com.uni.utils.X5CorePreLoadService;
+
 public class ButtonPlugin {
 
     private static Activity unityActivity;

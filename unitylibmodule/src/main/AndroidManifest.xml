@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <!--    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>-->
 
 <!--    <application>-->
@@ -32,6 +33,14 @@
             />
         <activity android:name=".ButtonActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
 
+<!--        在AndroidManifest.xml中增加内核首次加载时优化Service声明。该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。-->
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
+
     </application>
+
 
 </manifest>
