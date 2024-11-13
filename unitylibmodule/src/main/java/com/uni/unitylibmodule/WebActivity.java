@@ -1,5 +1,6 @@
 package com.uni.unitylibmodule;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -58,19 +59,89 @@ public class WebActivity extends Activity {
         instance = this;
 
         setStatusBar();
-
-        Button myButton = findViewById(R.id.myButton);
-        myButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(WebActivity.this, "Button Clicked!", Toast.LENGTH_SHORT).show();
-                closeActivity();
-            }
-        });
-
+        initBackLobbyButtonWithDrag();
         openSplash();
         setWebView();
     }
+
+    /**
+     * 初始化返回按钮的事件
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void initBackLobbyButtonWithDrag() {
+        Button myButton = findViewById(R.id.myButton);
+
+        // 定义一个阈值来判断点击和拖动的区分
+        final int CLICK_THRESHOLD = 10;
+        final int[] lastTouchDownXY = new int[2];
+
+        // 设置点击监听
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("back lobby on click ", "back lobby  ==");
+                closeActivity();  // 点击触发的逻辑
+            }
+        });
+
+        // 设置触摸监听，用于拖动按钮
+        myButton.setOnTouchListener(new View.OnTouchListener() {
+            private int lastX, lastY;
+            private boolean isDragging = false;
+            private int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            private int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // 记录初始位置
+                        lastX = (int) event.getRawX();
+                        lastY = (int) event.getRawY();
+                        lastTouchDownXY[0] = (int) event.getRawX();
+                        lastTouchDownXY[1] = (int) event.getRawY();
+                        isDragging = false;  // 重置拖动状态
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // 计算移动距离
+                        int deltaX = (int) event.getRawX() - lastX;
+                        int deltaY = (int) event.getRawY() - lastY;
+
+                        // 如果移动距离超过阈值，判定为拖动
+                        if (Math.abs(deltaX) > CLICK_THRESHOLD || Math.abs(deltaY) > CLICK_THRESHOLD) {
+                            isDragging = true;
+                        }
+
+                        if (isDragging) {
+                            // 计算新的位置，确保按钮在屏幕范围内
+                            int newX = v.getLeft() + deltaX;
+                            int newY = v.getTop() + deltaY;
+                            newX = Math.max(0, Math.min(newX, screenWidth - v.getWidth()));
+                            newY = Math.max(0, Math.min(newY, screenHeight - v.getHeight()));
+
+                            // 设置按钮的新位置
+                            v.layout(newX, newY, newX + v.getWidth(), newY + v.getHeight());
+
+                            // 更新上次的位置
+                            lastX = (int) event.getRawX();
+                            lastY = (int) event.getRawY();
+                        }
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        // 如果未发生拖动，则触发点击事件
+                        if (!isDragging) {
+                            v.performClick();  // 触发 OnClickListener
+                        }
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+
 
     /**
      * 打开loading图
@@ -157,8 +228,8 @@ public class WebActivity extends Activity {
         settings.setDisplayZoomControls(false); // 不显示缩放控件
         settings.setBuiltInZoomControls(true); // 允许缩放
         settings.setSupportZoom(true);
+        Log.e("WebActivity", "url not null");
 
-        webView.loadUrl("http://192.168.6.228:8038/?isEncrypt=true&member_account=sss121&member_password=qqq111&game_id=10102&game_guest=false&server_url=http%3A%2F%2F192.168.6.128:9001");
         String url = ButtonPlugin.GetUrl();
         if (url != null){
             Log.e("WebActivity", "url not null");

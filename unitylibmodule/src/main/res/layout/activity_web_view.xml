@@ -15,8 +15,8 @@
         />
     <Button
         android:id="@+id/myButton"
-        android:layout_width="40dp"
-        android:layout_height="48dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:background="@drawable/ui_an_lobby1"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
