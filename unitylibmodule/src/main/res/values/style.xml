@@ -4,4 +4,8 @@
         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
         <item name="android:progressDrawable">@drawable/progress_scale</item>
     </style>
+    <!-- 圆角不支持 -->
+<!--    <style name="AppTheme.AlertDialog" parent="Theme.AppCompat.Light.Dialog">-->
+<!--        <item name="android:windowBackground">@drawable/dialog_background</item>-->
+<!--    </style>-->
 </resources>

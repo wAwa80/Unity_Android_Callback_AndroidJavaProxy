@@ -2,6 +2,7 @@ package com.uni.unitylibmodule;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -39,6 +40,11 @@ public class WebActivity extends Activity {
     private LinearLayout linearLayout;
 
     private static WebActivity instance;
+
+    public static WebActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -62,10 +68,11 @@ public class WebActivity extends Activity {
         initBackLobbyButtonWithDrag();
         openSplash();
         setWebView();
+
     }
 
     /**
-     * 初始化返回按钮的事件
+     * 初始化返回按钮的事件, 按钮可以拖动
      */
     @SuppressLint("ClickableViewAccessibility")
     private void initBackLobbyButtonWithDrag() {
@@ -141,6 +148,30 @@ public class WebActivity extends Activity {
         });
     }
 
+    /**
+     * 显示大厅在多端登录下的错误弹窗
+     */
+    public void showCustomDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.no_connect_dialog_custom);
+        dialog.setCancelable(false);
+
+        // 设置标题和消息内容
+        TextView title = dialog.findViewById(R.id.dialog_title);
+        TextView message = dialog.findViewById(R.id.dialog_message);
+        Button okButton = dialog.findViewById(R.id.dialog_ok_button);
+
+        title.setText("Lembrete");
+        message.setText("A conta já está logada em outro dispositivo. Se não for a mesma pessoa, acesse a página de login do dispositivo para remover o dispositivo.");
+
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            closeActivity();  // 点击触发的逻辑
+        });
+
+        dialog.show();
+    }
 
 
     /**
@@ -362,6 +393,10 @@ public class WebActivity extends Activity {
             webView = null;
         }
         super.onDestroy();
+        // 清除静态引用，避免内存泄漏
+        if (instance == this) {
+            instance = null;
+        }
     }
 
 }
