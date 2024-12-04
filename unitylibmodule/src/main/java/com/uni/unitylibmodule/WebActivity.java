@@ -350,6 +350,26 @@ public class WebActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        sendToWebView("appPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendToWebView("appResume");
+    }
+
+    private void sendToWebView(String eventName) {
+        if (webView != null) {
+            String script = "document.dispatchEvent(new Event('" + eventName + "'));";
+            webView.evaluateJavascript(script, null);
+        }
+    }
+
+
+    @Override
     protected void onDestroy() {
         if (webView != null) {
             webView.clearHistory();
